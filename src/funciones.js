@@ -37,6 +37,29 @@ export function confirmar(id, name) {
 
 }
 
+export function confirmarTdoc(id, name) {
+    let url = 'https://localhost:7008/TiposDocumento/' + id
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: { confirmButton: 'btn btn-success me-3', cancelButton: 'btn btn-danger' },
+        buttonsStyling: false
+    })
+    swalWithBootstrapButtons.fire({
+        title: 'Seguro de eliminar información ' + name,
+        text: 'Se perdeá la información del tipo de documento',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: '<i class="fa-solid fa-check"></i> Si, eliminar',
+        cancelButtonText: '<i class="fa-solid fa-ban"></i> Cancelar'
+    }).then((ressult) => {
+        if (ressult.isConfirmed) {
+            envirSolicitud('DELETE', id, url, 'tipo de docuemnto Eliminado')
+        }
+        else {
+            show_alert('Operación cancelada', 'info')
+        }
+    })
+
+}
 export function envirSolicitud(metodo, parametros, url, mensaje) {
     axios({ method: metodo, url: url, data: parametros }).then(function (respuesta) {
         if (respuesta.status === 200 || respuesta.status === 201 || respuesta.status === 204) {
